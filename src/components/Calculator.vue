@@ -13,8 +13,17 @@
         <td>Druck</td>
         <td>Preis</td>
       </tr>
+      <tr v-for="print in prints">
+        <td>
+          <select v-model="print.size" v-bind:value="print.size">
+            <option v-for="(value, key) in prices.print">{{ key }}</option>
+          </select>
+        </td>
+        <td><input></input></td>
+        <td>Druck</td>
+        <td>Preis</td>
+      </tr>
     </table>
-
     <h2>Preiskalkulation</h2>
     <table>
       <tr>
@@ -31,7 +40,7 @@
       </tr>
       <tr>
         <td>Druckkosten:</td>
-        <td>{{ prices.print }} Euro</td>
+        <td>Euro</td>
       </tr>
       <tr>
         <td>Summe:</td>
@@ -51,11 +60,59 @@ export default {
         designer: 50,
         shippingStandard: 10,
         shippingChurch: 5,
-        print: {}
+        print: {
+          A0: {
+            A4a: 16,
+            priceA4: 0.1,
+            price: 1.6
+          },
+          A1: {
+            A4a: 8,
+            priceA4: 0.1,
+            price: 0.8
+          },
+          A2: {
+            A4a: 4,
+            priceA4: 0.1,
+            price: 0.4
+          },
+          A3: {
+            A4a: 2,
+            priceA4: 0.1,
+            price: 0.2
+          },
+          A4: {
+            A4a: 1,
+            priceA4: 0.02,
+            price: 0.02
+          },
+          A5: {
+            A4a: 0.5,
+            priceA4: 0.02,
+            price: 0.01
+          },
+          A6: {
+            A4a: 0.25,
+            priceA4: 0.02,
+            price: 0.01
+          },
+          A7: {
+            A4a: 0.13,
+            priceA4: 0.02,
+            price: 0
+          }
+        }
       },
       settings: {
         designer: true,
         shipping: true
+      },
+      prints: {
+        0: {
+          size: "A4",
+          number: 100,
+          double: false
+        }
       }
     };
   },
