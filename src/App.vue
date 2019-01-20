@@ -1,14 +1,14 @@
 <template>
-  <div id="app"><HelloWorld /></div>
+  <div id="app"><Calculator /></div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Calculator from "./components/Calculator";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Calculator
   }
 };
 </script>
