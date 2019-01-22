@@ -1,30 +1,20 @@
 <template>
   <div class="hello">
     <h1>Preiskalkulator Druckaufträge</h1>
-    Ein Designer wird benötigt:
-    <input type="checkbox" v-model="settings.designer" /> <br />
-    Versand über Büchertisch:
-    <input type="checkbox" v-model="settings.shipping" />
+    <input type="checkbox" v-model="settings.designer" /> Ein Designer wird
+    benötigt <br />
+    <input type="checkbox" v-model="settings.shipping" /> Versand über
+    Büchertisch
     <h2>Drucksachen</h2>
     <table>
       <tr>
-        <td>Größe</td>
-        <td>Stück</td>
-        <td>Druck</td>
-        <td>Preis</td>
+        <th>Stück</th>
+        <th>Größe</th>
+        <th>Einzelpreis</th>
+        <th>Druck</th>
+        <th>Preis</th>
       </tr>
       <tr v-for="(print, key) in prints" :key="key">
-        <td>
-          <select
-            v-model="print.size"
-            v-bind:value="print.size"
-            v-on:change="calcPrintPrice(print);"
-          >
-            <option v-for="(value, key) in prices.print" :key="key">{{
-              key
-            }}</option>
-          </select>
-        </td>
         <td>
           <input
             v-model="print.number"
@@ -32,6 +22,18 @@
             v-on:keyup="calcPrintPrice(print);"
           />
         </td>
+        <td>
+          <select
+            v-model="print.size"
+            v-bind:value="print.size"
+            v-on:change="calcPrintPrice(print);"
+          >
+            <option v-for="(value, key) in prices.print" :key="key">
+              {{ key }}
+            </option>
+          </select>
+        </td>
+        <td>{{ formatPrice(print.basePrice) }} Euro</td>
         <td>
           <select
             v-model="print.double"
@@ -42,32 +44,37 @@
             <option value="true">Doppelseitig</option>
           </select>
         </td>
-        <td>{{ print.price }} Euro</td>
+        <td>{{ formatPrice(print.price) }} Euro</td>
+        <td><button v-on:click="deletePrint(print);">Zeile löschen</button></td>
       </tr>
     </table>
+
+    <button v-on:click="addPrint">Zeile hinzufügen</button>
 
     <h2>Preiskalkulation</h2>
     <table>
       <tr>
         <td>Grundpauschale:</td>
-        <td>{{ prices.base }} Euro</td>
+        <td>{{ formatPrice(prices.base) }} Euro</td>
       </tr>
       <tr>
         <td>Grafikerpauschale:</td>
-        <td>{{ prices.designer * this.settings.designer }} Euro</td>
+        <td>
+          {{ formatPrice(prices.designer * this.settings.designer) }} Euro
+        </td>
       </tr>
       <tr>
         <td>Versandkostenpauschale:</td>
-        <td>{{ priceShipping }} Euro</td>
+        <td>{{ formatPrice(priceShipping) }} Euro</td>
       </tr>
       <tr>
         <td>Druckkosten:</td>
-        <td>Euro</td>
+        <td>{{ formatPrice(printSum) }} Euro</td>
       </tr>
       <tr>
         <td><b>Summe:</b></td>
         <td>
-          <b>{{ priceSum }} Euro</b>
+          <b>{{ formatPrice(priceSum) }} Euro</b>
         </td>
       </tr>
     </table>
@@ -99,15 +106,15 @@ export default {
         designer: true,
         shipping: true
       },
-      prints: {
-        0: {
+      prints: [
+        {
           size: "A4",
           number: 100,
           double: false,
           basePrice: 0,
           price: 0
         }
-      }
+      ]
     };
   },
   methods: {
@@ -120,8 +127,31 @@ export default {
       if (e.size === "A5") e.basePrice = this.prices.print.A5;
       if (e.size === "A6") e.basePrice = this.prices.print.A6;
       if (e.size === "A7") e.basePrice = this.prices.print.A7;
-      if (e.double === true) e.price = e.basePrice * e.number * 2;
-      else e.price = e.basePrice * e.number;
+      if (e.double) {
+        e.price = e.basePrice * e.number * 2;
+      } else {
+        e.price = e.basePrice * e.number;
+      }
+    },
+    addPrint: function() {
+      this.calcPrintPrice(
+        this.prints[
+          this.prints.push({
+            size: "A4",
+            number: 100,
+            double: false,
+            basePrice: 0,
+            price: 0
+          }) - 1
+        ]
+      );
+    },
+    deletePrint: function(print) {
+      this.prints.splice(this.prints.indexOf(print), 1);
+    },
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
   },
   computed: {
@@ -129,7 +159,8 @@ export default {
       return (
         this.prices.base +
         this.settings.designer * this.prices.designer +
-        this.priceShipping
+        this.priceShipping +
+        this.printSum
       );
     },
     priceShipping: function() {
@@ -137,9 +168,19 @@ export default {
         this.prices.shippingChurch * this.settings.shipping +
         this.prices.shippingStandard * !this.settings.shipping
       );
+    },
+    printSum: function() {
+      if (!this.prints) {
+        return 0;
+      }
+
+      return this.prints.reduce(function(total, value) {
+        return total + Number(value.price);
+      }, 0);
     }
   },
   created: function() {
+    this.calcPrintPrice(this.prints[0]);
     this.$http
       .get("https://jsonplaceholder.typicode.com/users")
       .then(function(response) {
