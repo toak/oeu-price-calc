@@ -3,7 +3,7 @@
   "version": 2,
   "name": "oeu-price-calc",
   "builds": [
-    { "src": "package.json", "use": "@now/build" }
+    { "src": "package.json", "use": "@now/static-build" }
   ],
   "routes": [
     {"src": "^/js/(.*)", "dest": "/js/$1"},
