@@ -33,18 +33,18 @@
             </option>
           </select>
         </td>
-        <td>{{ formatPrice(print.basePrice) }} Euro</td>
+        <td align="right">{{ formatPrice(print.basePrice) }} Euro</td>
         <td>
           <select
             v-model="print.double"
             v-bind:value="print.double"
             v-on:change="calcPrintPrice(print);"
           >
-            <option value="false">Einseitig</option>
-            <option value="true">Doppelseitig</option>
+            <option value="">Einseitig</option>
+            <option value="1">Doppelseitig</option>
           </select>
         </td>
-        <td>{{ formatPrice(print.price) }} Euro</td>
+        <td align="right">{{ formatPrice(print.price) }} Euro</td>
         <td><button v-on:click="deletePrint(print);">Zeile löschen</button></td>
       </tr>
     </table>
@@ -55,25 +55,25 @@
     <table>
       <tr>
         <td>Grundpauschale:</td>
-        <td>{{ formatPrice(prices.base) }} Euro</td>
+        <td align="right">{{ formatPrice(prices.base) }} Euro</td>
       </tr>
       <tr>
         <td>Grafikerpauschale:</td>
-        <td>
+        <td align="right">
           {{ formatPrice(prices.designer * this.settings.designer) }} Euro
         </td>
       </tr>
       <tr>
         <td>Versandkostenpauschale:</td>
-        <td>{{ formatPrice(priceShipping) }} Euro</td>
+        <td align="right">{{ formatPrice(priceShipping) }} Euro</td>
       </tr>
       <tr>
         <td>Druckkosten:</td>
-        <td>{{ formatPrice(printSum) }} Euro</td>
+        <td align="right">{{ formatPrice(printSum) }} Euro</td>
       </tr>
       <tr>
         <td><b>Summe:</b></td>
-        <td>
+        <td align="right">
           <b>{{ formatPrice(priceSum) }} Euro</b>
         </td>
       </tr>
@@ -86,35 +86,12 @@ export default {
   name: "Calculator",
   data() {
     return {
-      prices: {
-        base: 15,
-        designer: 50,
-        shippingStandard: 10,
-        shippingChurch: 5,
-        print: {
-          A0: 1.6,
-          A1: 0.8,
-          A2: 0.4,
-          A3: 0.2,
-          A4: 0.02,
-          A5: 0.01,
-          A6: 0.005,
-          A7: 0.0025
-        }
-      },
+      prices: [],
       settings: {
         designer: true,
         shipping: true
       },
-      prints: [
-        {
-          size: "A4",
-          number: 100,
-          double: false,
-          basePrice: 0,
-          price: 0
-        }
-      ]
+      prints: []
     };
   },
   methods: {
@@ -139,7 +116,7 @@ export default {
           this.prints.push({
             size: "A4",
             number: 100,
-            double: false,
+            double: "",
             basePrice: 0,
             price: 0
           }) - 1
@@ -180,11 +157,13 @@ export default {
     }
   },
   created: function() {
-    this.calcPrintPrice(this.prints[0]);
     this.$http
-      .get("https://jsonplaceholder.typicode.com/users")
+      .get(
+        "https://raw.githubusercontent.com/toak/oeu-price-calc-conf/master/prices.json"
+      )
       .then(function(response) {
-        console.log(response.data);
+        this.prices = response.data.prices;
+        this.addPrint();
       });
   }
 };
