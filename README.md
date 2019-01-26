@@ -1,6 +1,6 @@
-# test-project
+# Print Cost Calculator
 
-> A Vue.js project
+> Configs can be changed in https://github.com/toak/oeu-price-calc-conf. Written in Vue.js. 
 
 ## Build Setup
 
@@ -23,5 +23,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
