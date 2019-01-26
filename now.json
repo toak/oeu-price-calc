@@ -1,5 +1,5 @@
 {
-  "alias": ["zeit.co/tobi/oeu-price-calc"],
+  "alias": ["oeu-price-calc"],
   "version": 2,
   "name": "oeu-price-calc",
   "builds": [
