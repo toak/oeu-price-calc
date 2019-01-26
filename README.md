@@ -1,6 +1,7 @@
 # Print Cost Calculator
 
-> Configs can be changed in https://github.com/toak/oeu-price-calc-conf. Written in Vue.js. 
+Configs can be changed in https://github.com/toak/oeu-price-calc-conf.
+Written in Vue.js. 
 
 ## Build Setup
 
