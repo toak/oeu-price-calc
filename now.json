@@ -4,10 +4,5 @@
   "name": "oeu-price-calc",
   "builds": [
     { "src": "package.json", "use": "@now/static-build" }
-  ],
-  "routes": [
-    {"src": "^/js/(.*)", "dest": "/static/js/$1"},
-    {"src": "^/css/(.*)", "dest": "/static/css/$1"},
-    {"src": ".*", "dest": "/index.html"}
   ]
 }
