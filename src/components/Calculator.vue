@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>Preiskalkulator Druckaufträge</h1>
     <input type="checkbox" v-model="settings.designer" /> Ein Designer wird
     benötigt <br />
@@ -33,7 +33,7 @@
             </option>
           </select>
         </td>
-        <td align="right">{{ formatPrice(print.basePrice) }} Euro</td>
+        <td class="right">{{ formatPrice(print.basePrice) }} Euro</td>
         <td>
           <select
             v-model="print.double"
@@ -44,7 +44,7 @@
             <option value="1">Doppelseitig</option>
           </select>
         </td>
-        <td align="right">{{ formatPrice(print.price) }} Euro</td>
+        <td class="right">{{ formatPrice(print.price) }} Euro</td>
         <td><button v-on:click="deletePrint(print);">Zeile löschen</button></td>
       </tr>
     </table>
@@ -55,25 +55,25 @@
     <table>
       <tr>
         <td>Grundpauschale:</td>
-        <td align="right">{{ formatPrice(prices.base) }} Euro</td>
+        <td class="right">{{ formatPrice(prices.base) }} Euro</td>
       </tr>
       <tr>
         <td>Grafikerpauschale:</td>
-        <td align="right">
+        <td class="right">
           {{ formatPrice(prices.designer * this.settings.designer) }} Euro
         </td>
       </tr>
       <tr>
         <td>Versandkostenpauschale:</td>
-        <td align="right">{{ formatPrice(priceShipping) }} Euro</td>
+        <td class="right">{{ formatPrice(priceShipping) }} Euro</td>
       </tr>
       <tr>
         <td>Druckkosten:</td>
-        <td align="right">{{ formatPrice(printSum) }} Euro</td>
+        <td class="right">{{ formatPrice(printSum) }} Euro</td>
       </tr>
       <tr>
         <td><b>Summe:</b></td>
-        <td align="right">
+        <td class="right">
           <b>{{ formatPrice(priceSum) }} Euro</b>
         </td>
       </tr>
@@ -168,3 +168,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.right {
+  text-align: right;
+}
+</style>
