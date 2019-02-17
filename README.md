@@ -1,5 +1,7 @@
 # Print Cost Calculator
 
+[![Build Status](https://travis-ci.org/toak/oeu-price-calc.svg?branch=master)](https://travis-ci.org/toak/oeu-price-calc)
+
 Configs can be changed in https://github.com/toak/oeu-price-calc-conf.
 Written in Vue.js. 
 
