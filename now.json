@@ -1,8 +1,6 @@
 {
-  "alias": ["oeu-price-calc", "oeu-price-calc.cd.toak.de", "oeu-price-calc.cd.tobiaska.de"],
+  "alias": ["oeu-price-calc", "oeu-price-calc.cd.toak.de"],
   "version": 2,
   "name": "oeu-price-calc",
-  "builds": [
-    { "src": "package.json", "use": "@now/static-build" }
-  ]
+  "builds": [{"src": "package.json", "use": "@now/static-build"}]
 }
