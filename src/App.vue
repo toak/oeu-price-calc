@@ -3,19 +3,19 @@
 </template>
 
 <script>
-import Calculator from "./components/Calculator";
+import Calculator from './components/Calculator';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Calculator
-  }
+    Calculator,
+  },
 };
 </script>
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
