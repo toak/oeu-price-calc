@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>Preiskalkulator Druckaufträge</h1>
     <input type="checkbox" v-model="settings.designer" /> Ein Designer wird
     benötigt <br />
@@ -33,7 +33,7 @@
             </option>
           </select>
         </td>
-        <td align="right">{{ formatPrice(print.basePrice) }} Euro</td>
+        <td class="right">{{ formatPrice(print.basePrice) }} Euro</td>
         <td>
           <select
             v-model="print.double"
@@ -44,7 +44,7 @@
             <option value="1">Doppelseitig</option>
           </select>
         </td>
-        <td align="right">{{ formatPrice(print.price) }} Euro</td>
+        <td class="right">{{ formatPrice(print.price) }} Euro</td>
         <td><button v-on:click="deletePrint(print);">Zeile löschen</button></td>
       </tr>
     </table>
@@ -55,25 +55,25 @@
     <table>
       <tr>
         <td>Grundpauschale:</td>
-        <td align="right">{{ formatPrice(prices.base) }} Euro</td>
+        <td class="right">{{ formatPrice(prices.base) }} Euro</td>
       </tr>
       <tr>
         <td>Grafikerpauschale:</td>
-        <td align="right">
+        <td class="right">
           {{ formatPrice(prices.designer * this.settings.designer) }} Euro
         </td>
       </tr>
       <tr>
         <td>Versandkostenpauschale:</td>
-        <td align="right">{{ formatPrice(priceShipping) }} Euro</td>
+        <td class="right">{{ formatPrice(priceShipping) }} Euro</td>
       </tr>
       <tr>
         <td>Druckkosten:</td>
-        <td align="right">{{ formatPrice(printSum) }} Euro</td>
+        <td class="right">{{ formatPrice(printSum) }} Euro</td>
       </tr>
       <tr>
         <td><b>Summe:</b></td>
-        <td align="right">
+        <td class="right">
           <b>{{ formatPrice(priceSum) }} Euro</b>
         </td>
       </tr>
@@ -83,56 +83,56 @@
 
 <script>
 export default {
-  name: "Calculator",
+  name: 'Calculator',
   data() {
     return {
       prices: [],
       settings: {
         designer: true,
-        shipping: true
+        shipping: true,
       },
-      prints: []
+      prints: [],
     };
   },
   methods: {
-    calcPrintPrice: function(e) {
-      if (e.size === "A0") e.basePrice = this.prices.print.A0;
-      if (e.size === "A1") e.basePrice = this.prices.print.A1;
-      if (e.size === "A2") e.basePrice = this.prices.print.A2;
-      if (e.size === "A3") e.basePrice = this.prices.print.A3;
-      if (e.size === "A4") e.basePrice = this.prices.print.A4;
-      if (e.size === "A5") e.basePrice = this.prices.print.A5;
-      if (e.size === "A6") e.basePrice = this.prices.print.A6;
-      if (e.size === "A7") e.basePrice = this.prices.print.A7;
+    calcPrintPrice(e) {
+      if (e.size === 'A0') e.basePrice = this.prices.print.A0;
+      if (e.size === 'A1') e.basePrice = this.prices.print.A1;
+      if (e.size === 'A2') e.basePrice = this.prices.print.A2;
+      if (e.size === 'A3') e.basePrice = this.prices.print.A3;
+      if (e.size === 'A4') e.basePrice = this.prices.print.A4;
+      if (e.size === 'A5') e.basePrice = this.prices.print.A5;
+      if (e.size === 'A6') e.basePrice = this.prices.print.A6;
+      if (e.size === 'A7') e.basePrice = this.prices.print.A7;
       if (e.double) {
         e.price = e.basePrice * e.number * 2;
       } else {
         e.price = e.basePrice * e.number;
       }
     },
-    addPrint: function() {
+    addPrint() {
       this.calcPrintPrice(
         this.prints[
           this.prints.push({
-            size: "A4",
+            size: 'A4',
             number: 100,
-            double: "",
+            double: '',
             basePrice: 0,
-            price: 0
+            price: 0,
           }) - 1
         ]
       );
     },
-    deletePrint: function(print) {
+    deletePrint(print) {
       this.prints.splice(this.prints.indexOf(print), 1);
     },
     formatPrice(value) {
-      let val = (value / 1).toFixed(2).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
   },
   computed: {
-    priceSum: function() {
+    priceSum() {
       return (
         this.prices.base +
         this.settings.designer * this.prices.designer +
@@ -140,13 +140,13 @@ export default {
         this.printSum
       );
     },
-    priceShipping: function() {
+    priceShipping() {
       return (
         this.prices.shippingChurch * this.settings.shipping +
         this.prices.shippingStandard * !this.settings.shipping
       );
     },
-    printSum: function() {
+    printSum() {
       if (!this.prints) {
         return 0;
       }
@@ -154,17 +154,23 @@ export default {
       return this.prints.reduce(function(total, value) {
         return total + Number(value.price);
       }, 0);
-    }
+    },
   },
-  created: function() {
+  created() {
     this.$http
       .get(
-        "https://raw.githubusercontent.com/toak/oeu-price-calc-conf/master/prices.json"
+        'https://raw.githubusercontent.com/toak/oeu-price-calc-conf/master/prices.json'
       )
       .then(function(response) {
         this.prices = response.data.prices;
         this.addPrint();
       });
-  }
+  },
 };
 </script>
+
+<style scoped>
+.right {
+  text-align: right;
+}
+</style>
