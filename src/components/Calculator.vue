@@ -95,7 +95,7 @@ export default {
     };
   },
   methods: {
-    calcPrintPrice: function(e) {
+    calcPrintPrice(e) {
       if (e.size === 'A0') e.basePrice = this.prices.print.A0;
       if (e.size === 'A1') e.basePrice = this.prices.print.A1;
       if (e.size === 'A2') e.basePrice = this.prices.print.A2;
@@ -110,7 +110,7 @@ export default {
         e.price = e.basePrice * e.number;
       }
     },
-    addPrint: function() {
+    addPrint() {
       this.calcPrintPrice(
         this.prints[
           this.prints.push({
@@ -123,16 +123,16 @@ export default {
         ]
       );
     },
-    deletePrint: function(print) {
+    deletePrint(print) {
       this.prints.splice(this.prints.indexOf(print), 1);
     },
     formatPrice(value) {
-      let val = (value / 1).toFixed(2).replace('.', ',');
+      const val = (value / 1).toFixed(2).replace('.', ',');
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
   },
   computed: {
-    priceSum: function() {
+    priceSum() {
       return (
         this.prices.base +
         this.settings.designer * this.prices.designer +
@@ -140,13 +140,13 @@ export default {
         this.printSum
       );
     },
-    priceShipping: function() {
+    priceShipping() {
       return (
         this.prices.shippingChurch * this.settings.shipping +
         this.prices.shippingStandard * !this.settings.shipping
       );
     },
-    printSum: function() {
+    printSum() {
       if (!this.prints) {
         return 0;
       }
@@ -156,7 +156,7 @@ export default {
       }, 0);
     },
   },
-  created: function() {
+  created() {
     this.$http
       .get(
         'https://raw.githubusercontent.com/toak/oeu-price-calc-conf/master/prices.json'
